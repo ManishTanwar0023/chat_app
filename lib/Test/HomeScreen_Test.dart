@@ -21,17 +21,27 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: ZIMKitConversationListView(
         onPressed: (context, conversation, defaultAction) async {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ZIMKitMessageListPage(
-                conversationID: conversation.id,
-                conversationType: conversation.type,
-              ),
-            ),
-          );
+          await navigateToMessageListPage(context, conversation);
         },
       ),
     );
+  }
+
+  Future<void> navigateToMessageListPage(
+      BuildContext context, ZIMKitConversation conversation) async {
+    try {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ZIMKitMessageListPage(
+            conversationID: conversation.id,
+            conversationType: conversation.type,
+          ),
+        ),
+      );
+    } catch (e) {
+      // Handle navigation error
+      print('Error navigating to message list page: $e');
+    }
   }
 }
